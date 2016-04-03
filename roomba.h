@@ -1554,7 +1554,7 @@ typedef struct _pkt_group_100 {
   uint8_t ir_opcode_right;
   int16_t left_motor_current;
   int16_t right_motor_current;
-  int16_t main_brush_current,
+  int16_t main_brush_current;
   int16_t side_brush_current;
   uint8_t stasis;
 } ROOMBA_PACKET_GROUP_100;
