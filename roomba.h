@@ -21,6 +21,10 @@
 #ifndef ROOMBA_H_
 #define ROOMBA_H_
 
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdint.h>
+
 /**@{*/
 
 /*******************************************************************************
@@ -38,10 +42,13 @@
 //  #warning Interface type not specified
 #endif
 
-#define ROOMBA_ANGLE_STRAIGHT 0x8000
+#define LOW_BYTE(v)   ((unsigned char) (v))
+#define HIGH_BYTE(v)  ((unsigned char) (((unsigned int) (v)) >> 8))
+#define ROOMBA_ANGLE_STRAIGHT_NEGATIVE 0x8000
+#define ROOMBA_ANGLE_STRAIGHT_POSITIVE 0x7FFF
+#define ROOMBA_ANGLE_STRAIGHT ROOMBA_ANGLE_STRAIGHT_POSITIVE
 #define ROOMBA_ANGLE_CLOCKWISE 0xFFFF
 #define ROOMBA_ANGLE_COUNTER_CLOCKWISE 0x0001
-
 
 /**
  * @brief OP_CODE enum
@@ -1514,7 +1521,7 @@ typedef enum {
  * Function
  ******************************************************************************/
 
-
+int is_valid_roomba_command (uint8_t command[], uint16_t size);
 
 /**
  * @param uart_send_byte_callback_function a function that sends a uart byte to
