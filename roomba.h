@@ -1504,6 +1504,119 @@ typedef enum {
 	ROOMBA_115200BPS = 11,
 } ROOMBA_BITRATE;
 
+typedef struct _pkt_group_0 {
+  uint8_t bumps_wheeldrops;
+  uint8_t roomba_wall;
+  uint8_t cliff_left;
+  uint8_t cliff_front_left;
+  uint8_t cliff_front_right;
+  uint8_t cliff_right;
+  uint8_t virtual_wall;
+  uint8_t overcurrents;
+  uint8_t dirt_detect;
+  uint8_t unused_1;
+  uint8_t ir_opcode;
+  uint8_t buttons_pkt;
+  int16_t distance;
+  int16_t angle;
+  uint8_t charging_state;
+  uint16_t voltage;
+  int16_t current;
+  int8_t temperature;
+  uint16_t battery_charge;
+  uint16_t battery_capacity;
+} ROOMBA_PACKET_GROUP_0;
+
+typedef struct _pkt_group_1 {
+  uint8_t bumps_wheeldrops;
+  uint8_t roomba_wall;
+  uint8_t cliff_left;
+  uint8_t cliff_front_left;
+  uint8_t cliff_front_right;
+  uint8_t cliff_right;
+  uint8_t virtual_wall;
+  uint8_t overcurrents;
+  uint8_t dirt_detect;
+  uint8_t unused_1;
+} ROOMBA_PACKET_GROUP_1;
+
+typedef struct _pkt_group_2 {
+  uint8_t ir_opcode;
+  uint8_t buttons_pkt;
+  int16_t distance;
+  int16_t angle;
+} ROOMBA_PACKET_GROUP_2;
+
+typedef struct _pkt_group_3 {
+  uint8_t charging_state;
+  uint16_t voltage;
+  int16_t current;
+  int8_t temperature;
+  uint16_t battery_charge;
+  uint16_t battery_capacity;
+} ROOMBA_PACKET_GROUP_3;
+
+typedef struct _pkt_group_4 {
+  uint16_t wall_signal;
+  uint16_t cliff_left_signal;
+  uint16_t cliff_front_left_signal;
+  uint16_t cliff_front_right_signal;
+  uint16_t cliff_right_signal;
+  uint8_t unused_2;
+  uint16_t unused_3;
+  uint8_t charger_available;
+} ROOMBA_PACKET_GROUP_4;
+
+typedef struct _pkt_group_5 {
+  uint8_t open_interface_mode;
+  uint8_t song_number;
+  uint8_t song_playing;
+  uint8_t oi_stream_num_packets;
+  int16_t velocity;
+  int16_t radius;
+  int16_t velocity_right;
+  int16_t velocity_left;
+} ROOMBA_PACKET_GROUP_5;
+
+typedef struct _pkt_group_6 {
+  uint8_t bumps_wheeldrops;
+  uint8_t roomba_wall;
+  uint8_t cliff_left;
+  uint8_t cliff_front_left;
+  uint8_t cliff_front_right;
+  uint8_t cliff_right;
+  uint8_t virtual_wall;
+  uint8_t overcurrents;
+  uint8_t dirt_detect;
+  uint8_t unused_1;
+  uint8_t ir_opcode;
+  uint8_t buttons_pkt;
+  int16_t distance;
+  int16_t angle;
+  uint8_t charging_state;
+  uint16_t voltage;
+  int16_t current;
+  int8_t temperature;
+  uint16_t battery_charge;
+  uint16_t battery_capacity;
+  uint16_t wall_signal;
+  uint16_t cliff_left_signal;
+  uint16_t cliff_front_left_signal;
+  uint16_t cliff_front_right_signal;
+  uint16_t cliff_right_signal;
+  uint8_t unused_2;
+  uint16_t unused_3;
+  uint8_t charger_available;
+  uint8_t open_interface_mode;
+  uint8_t song_number;
+  uint8_t song_playing;
+  uint8_t oi_stream_num_packets;
+  int16_t velocity;
+  int16_t radius;
+  int16_t velocity_right;
+  int16_t velocity_left;
+} ROOMBA_PACKET_GROUP_6;
+
 typedef struct _pkt_group_100 {
   uint8_t bumps_wheeldrops;
   uint8_t roomba_wall;
@@ -1558,6 +1671,42 @@ typedef struct _pkt_group_100 {
   int16_t side_brush_current;
   uint8_t stasis;
 } ROOMBA_PACKET_GROUP_100;
+
+typedef struct _pkt_group_101 {
+  uint16_t encoder_counts_left;
+  uint16_t encoder_counts_right;
+  uint8_t light_bumper;
+  uint16_t light_bump_left;
+  uint16_t light_bump_front_left;
+  uint16_t light_bump_center_left;
+  uint16_t light_bump_center_right;
+  uint16_t light_bump_front_right;
+  uint16_t light_bump_right;
+  uint8_t ir_opcode_left;
+  uint8_t ir_opcode_right;
+  int16_t left_motor_current;
+  int16_t right_motor_current;
+  int16_t main_brush_current;
+  int16_t side_brush_current;
+  uint8_t stasis;
+} ROOMBA_PACKET_GROUP_101;
+
+typedef struct _pkt_group_106 {
+  uint16_t light_bump_left;
+  uint16_t light_bump_front_left;
+  uint16_t light_bump_center_left;
+  uint16_t light_bump_center_right;
+  uint16_t light_bump_front_right;
+  uint16_t light_bump_right;
+} ROOMBA_PACKET_GROUP_106;
+
+typedef struct _pkt_group_107 {
+  int16_t left_motor_current;
+  int16_t right_motor_current;
+  int16_t main_brush_current;
+  int16_t side_brush_current;
+  uint8_t stasis;
+} ROOMBA_PACKET_GROUP_107;
 
 /*******************************************************************************
  MACROS
