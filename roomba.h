@@ -7,16 +7,12 @@
  * defines useful commands and macros
  *
  * @note Based on the iRobot® Create® 2 Open Interface (OI) written by the
- * iRobot®
+ * iRobot®. Specification based on the iRobot® Roomba® 600 but may be
+ * compatible with other models.
  *
  * @author Richard B. Wagner
  * @date 2016-04-04
  */
-
-/*******************************************************************************
- * iRobot® Create® 2 Open Interface (OI)
- * Specification based on the iRobot® Roomba® 600
- ******************************************************************************/
 
 #ifndef ROOMBA_H_
 #define ROOMBA_H_
@@ -38,8 +34,8 @@
   #define ROOMBA_DEFAULT_BAUD_RATE 115200
 #elif ROOMBA_INTERFACE_VERSION==1
   #define ROOMBA_DEFAULT_BAUD_RATE 57600
-//#else
-//  #warning Interface type not specified
+#else
+  #warning Interface type not specified
 #endif
 
 #define LOW_BYTE(v)   ((unsigned char) (v))
@@ -83,7 +79,9 @@ typedef enum _roomba_op_code {
   ROOMBA_START = 128,
 
   /**
-   * Baud | Opcode: 129 | Data Bytes: 1
+   * Baud |
+   * Opcode: 129 |
+   * Data Bytes: 1
    *
    * This command sets the baud rate in bits per second (bps) at which OI
    * commands and data are sent according to the baud code sent in the data
@@ -117,7 +115,10 @@ typedef enum _roomba_op_code {
   ROOMBA_BAUD = 129,
 
   /**
-   * Control Command opcode: 130 Data bytes: 0
+   * Control Command
+   * opcode: 130
+   * Data bytes: 0
+   *
    * Enables user control of Roomba. This command must be sent after the start
    * command and before any control commands are sent to the SCI. The SCI must
    * be in passive mode to accept this command. This command puts the SCI in
@@ -127,7 +128,9 @@ typedef enum _roomba_op_code {
   ROOMBA_CONTROL = 130,
 
   /**
-   * Safe Opcode: 131 Data Bytes: 0
+   * Safe
+   * Opcode: 131
+   * Data Bytes: 0
    *
    * This command puts the OI into Safe mode, enabling user control of Roomba.  * It turns off all LEDs. The OI can be in Passive, Safe, or Full mode to
    * accept this command. If a safety condition occurs (see above)
@@ -141,7 +144,9 @@ typedef enum _roomba_op_code {
   ROOMBA_SAFE = 131,
 
   /**
-   * Full Opcode: 132 Data Bytes: 0
+   * Full
+   * Opcode: 132
+   * Data Bytes: 0
    *
    * This command gives you complete control over Roomba by putting the OI into
    * Full mode, and turning off the cliff, wheel-drop and internal charger
@@ -156,7 +161,9 @@ typedef enum _roomba_op_code {
   ROOMBA_FULL = 132,
 
   /**
-   * Power Opcode: 133 Data Bytes: 0
+   * Power
+   * Opcode: 133
+   * Data Bytes: 0
    *
    * This command powers down Roomba. The OI can be in Passive, Safe, or Full
    * mode to accept this command.
@@ -167,7 +174,9 @@ typedef enum _roomba_op_code {
   ROOMBA_POWER = 133,
 
   /**
-   * Spot Opcode: 134 Data Bytes: 0
+   * Spot
+   * Opcode: 134
+   * Data Bytes: 0
    *
    * This command starts the Spot cleaning mode. This is the same as pressing
    * Roomba’s Spot button, and will pause a cleaning cycle if one is already in
@@ -179,7 +188,9 @@ typedef enum _roomba_op_code {
   ROOMBA_SPOT = 134,
 
   /**
-   * Clean Opcode: 135 Data Bytes: 0
+   * Clean
+   * Opcode: 135
+   * Data Bytes: 0
    *
    * This command starts the default cleaning mode. This is the same as
    * pressing Roomba’s Clean button, and will pause a cleaning cycle if one is
@@ -191,7 +202,9 @@ typedef enum _roomba_op_code {
   ROOMBA_CLEAN = 135,
 
   /**
-   * Max Opcode: 136 Data Bytes: 0
+   * Max
+   * Opcode: 136
+   * Data Bytes: 0
    *
    * This command starts the Max cleaning mode, which will clean until the
    * battery is dead. This command will pause a cleaning cycle if one is
@@ -246,7 +259,9 @@ typedef enum _roomba_op_code {
   ROOMBA_DRIVE = 137,
 
   /**
-   * Motors Opcode: 138 Data Bytes: 1
+   * Motors
+   * Opcode: 138
+   * Data Bytes: 1
    *
    * This command lets you control the forward and backward motion of Roomba’s
    * main brush, side brush, and vacuum independently. Motor velocity cannot be
@@ -280,7 +295,9 @@ typedef enum _roomba_op_code {
   ROOMBA_MOTORS = 138,
 
   /**
-   * LEDs Opcode: 139 Data Bytes: 3
+   * LEDs
+   * Opcode: 139
+   * Data Bytes: 3
    *
    * This command controls the LEDs common to all models of Roomba 600. The
    * power LED is specified by two data bytes: one for the color and the other
@@ -877,7 +894,8 @@ typedef enum _roomba_op_code {
   ROOMBA_BUTTONS_CMD = 165,
 
   /**
-  This command sends Roomba a new schedule. To disable scheduled cleaning, send all 0s.
+   * This command sends Roomba a new schedule. To disable scheduled cleaning,
+   * send all 0s.
    *   - Serial sequence: [167] [Days] [Sun Hour] [Sun Minute] [Mon Hour] [Mon Minute] [Tue Hour] [Tue
   Minute] [Wed Hour] [Wed Minute] [Thu Hour] [Thu Minute] [Fri Hour] [Fri Minute] [Sat Hour] [Sat
   Minute]
@@ -1020,466 +1038,674 @@ typedef enum _pv {
   ROOMBA_BUMPS_WHEELDROPS  = 7,
 
   /**
-  Wall Packet ID: 8 Data Bytes: 1, unsigned
-  The state of the wall sensor is sent as a 1 bit value (0 = no wall, 1 = wall seen).
-  Range: 0 – 1
+   * Wall
+   * Packet ID: 8
+   * Data Bytes: 1, unsigned
+   *
+   * The state of the wall sensor is sent as a 1 bit value (0 = no wall,
+   * 1 = wall seen).
+   *
+   * Range: 0 – 1
    */
   ROOMBA_WALL = 8,
 
   /**
-  Cliff Left Packet ID: 9 Data Bytes: 1, unsigned
-  The state of the cliff sensor on the left side of Roomba is sent as a 1 bit value (0 = no cliff, 1 = cliff).
-  Range: 0 – 1
+   * Cliff Left
+   * Packet ID: 9
+   * Data Bytes: 1, unsigned
+   *
+   * The state of the cliff sensor on the left side of Roomba is sent as a 1
+   * bit value (0 = no cliff, 1 = cliff).
+   *
+   * Range: 0 – 1
    */
   ROOMBA_CLIFF_LEFT = 9,
 
   /**
-  Cliff Front Left Packet ID: 10 Data Bytes: 1, unsigned
-  The state of the cliff sensor on the front left of Roomba is sent as a 1 bit value (0 = no cliff, 1 = cliff).
-  Range: 0 – 1
+   * Cliff Front Left
+   * Packet ID: 10
+   * Data Bytes: 1, unsigned
+   *
+   * The state of the cliff sensor on the front left of Roomba is sent as a 1
+   * bit value (0 = no cliff, 1 = cliff).
+   *
+   * Range: 0 – 1
    */
   ROOMBA_CLIFF_FRONT_LEFT = 10,
 
   /**
-  Cliff Front Right Packet ID: 11 Data Bytes: 1, unsigned
-  The state of the cliff sensor on the front right of Roomba is sent as a 1 bit value (0 = no cliff, 1 = cliff)
-  Range: 0 – 1
+   * Cliff Front Right
+   * Packet ID: 11
+   * Data Bytes: 1, unsigned
+   *
+   * The state of the cliff sensor on the front right of Roomba is sent as a 1
+   * bit value (0 = no cliff, 1 = cliff)
+   *
+   * Range: 0 – 1
    */
   ROOMBA_CLIFF_FRONT_RIGHT = 11,
 
   /**
-  Cliff Right Packet ID: 12 Data Bytes: 1, unsigned
-  The state of the cliff sensor on the right side of Roomba is sent as a 1 bit value (0 = no cliff, 1 = cliff)
-  Range: 0 – 1
+   * Cliff Right
+   * Packet ID: 12
+   * Data Bytes: 1, unsigned
+   *
+   * The state of the cliff sensor on the right side of Roomba is sent as a 1
+   * bit value (0 = no cliff, 1 = cliff)
+   *
+   * Range: 0 – 1
    */
   ROOMBA_CLIFF_RIGHT = 12,
 
   /**
-  Virtual Wall Packet ID: 13 Data Bytes: 1, unsigned
-  The state of the virtual wall detector is sent as a 1 bit value (0 = no virtual wall detected, 1 = virtual wall
-  detected).
-  Range: 0 – 1
+   * Virtual Wall
+   * Packet ID: 13
+   * Data Bytes: 1, unsigned
+   *
+   * The state of the virtual wall detector is sent as a 1 bit value (0 = no
+   * virtual wall detected, 1 = virtual wall detected).
+   *
+   * Range: 0 – 1
    */
   ROOMBA_VIRTUAL_WALL = 13,
 
   /**
-  Wheel Overcurrents Packet ID: 14 Data Bytes: 1, unsigned
-  The state of the four wheel overcurrent sensors are sent as individual bits (0 = no overcurrent, 1 =
-  overcurrent). There is no overcurrent sensor for the vacuum on Roomba 600.
-  Range: 0 – 31
-  Bit 7 6 5 4 3 2 1 0
-  Value Reserved Left
-  Wheel
-  Right
-  Wheel
-  Main
-  Brush
-  Reserved Side
-  Brush
+   * Wheel Overcurrents
+   * Packet ID: 14
+   * Data Bytes: 1, unsigned
+   *
+   * The state of the four wheel overcurrent sensors are sent as individual
+   * bits (0 = no overcurrent, 1 = overcurrent). There is no overcurrent sensor
+   * for the vacuum on Roomba 600.
+   *
+   * Range: 0 – 31
+   *
+   * | Bit   | 7        | 6          | 5           | 4    | 3     | 2 | 1 | 0 |
+   * |-------|----------|------------|-------------|------|-------|---|---|---|
+   * | Value | Reserved | Left Wheel | Right Wheel | Main | Brush | Reserved | Side Brush |
    */
   ROOMBA_OVERCURRENTS = 14,
 
   /**
-  Dirt Detect Packet IDs: 15 Data Bytes: 1
-  The level of the dirt detect sensor.
-  Range: 0-255
+   * Dirt Detect
+   * Packet IDs: 15
+   * Data Bytes: 1
+   *
+   * The level of the dirt detect sensor.
+   *
+   * Range: 0-255
    */
   ROOMBA_DIRT_DETECT = 15,
 
   /**
-  Unused Byte Packet IDs: 16 Data Bytes: 1
-  Unused bytes: One unused byte is sent after the dirt detect byte when the requested packet is 0, 1, or 6.
-  The value of the unused byte is always 0.
-  Range: 0
+   * Unused Byte
+   * Packet IDs: 16
+   * Data Bytes: 1
+   *
+   * Unused bytes: One unused byte is sent after the dirt detect byte when the
+   * requested packet is 0, 1, or 6. The value of the unused byte is always 0.
+   *
+   * Range: 0
    */
   ROOMBA_UNUSED_1 = 16,
 
   /**
-  Infrared Character Omni Packet ID: 17 Data Bytes: 1, unsigned
-  This value identifies the 8-bit IR character currently being received by Roomba’s omnidirectional receiver.
-  A value of 0 indicates that no character is being received. These characters include those sent by the
-  Roomba Remote, Dock, Virtual Walls, Create robots using the Send-IR command, and user-created
-  devices.
-  Range: 0 – 255
+   * Infrared Character Omni
+   * Packet ID: 17
+   * Data Bytes: 1, unsigned
+   *
+   * This value identifies the 8-bit IR character currently being received by
+   * Roomba’s omnidirectional receiver. A value of 0 indicates that no
+   * character is being received. These characters include those sent by the
+   * Roomba Remote, Dock, Virtual Walls, Create robots using the Send-IR
+   * command, and user-created devices.
+   *
+   * Range: 0 – 255
    */
   ROOMBA_IR_OPCODE = 17,
 
   /**
-  Buttons Packet ID: 18 Data Bytes: 1, unsigned
-  The state of the Roomba buttons are sent as individual bits (0 = button not pressed, 1 = button
-  pressed). The day, hour, minute, clock, and scheduling buttons that exist only on Roomba 560 and 570
-  will always return 0 on a Roomba 510 or 530 robot.
-  Range: 0 – 255
-  Bit 7 6 5 4 3 2 1 0
-  Value Clock Schedule Day Hour Minute Dock Spot Clean
+   * Buttons
+   * Packet ID: 18
+   * Data Bytes: 1, unsigned
+   *
+   * The state of the Roomba buttons are sent as individual bits (0 = button
+   * not pressed, 1 = button pressed). The day, hour, minute, clock, and
+   * scheduling buttons that exist only on Roomba 560 and 570 will always
+   * return 0 on a Roomba 510 or 530 robot.
+   *
+   * Range: 0 – 255
+   *
+   * | Bit   | 7     | 6        | 5   | 4    | 3      | 2    | 1    | 0     |
+   * |-------|-------|----------|-----|------|--------|------|------|-------|
+   * | Value | Clock | Schedule | Day | Hour | Minute | Dock | Spot | Clean |
    */
   ROOMBA_BUTTONS_PKT = 18,
 
   /**
-  Distance Packet ID: 19 Data Bytes: 2, signed
-  The distance that Roomba has traveled in millimeters since the distance it was last requested is sent as a
-  signed 16-bit value, high byte first. This is the same as the sum of the distance traveled by both wheels
-  divided by two. Positive values indicate travel in the forward direction; negative values indicate travel in
-  the reverse direction. If the value is not polled frequently enough, it is capped at its minimum or
-  maximum.
-  Range: -32768 – 32767
-  NOTE: Create 2 and Roomba 500/600 firmware versions prior to 3.3.0 return an incorrect value for
-  sensors measured in millimeters. To determine the firmware version on your robot, send a 7 via the serial
-  port to reset it. The robot will print a long welcome message which will include the firmware version, for
-  example: r3_robot/tags/release-3.3.0.
+   * Distance
+   * Packet ID: 19
+   * Data Bytes: 2, signed
+   *
+   * The distance that Roomba has traveled in millimeters since the distance it
+   * was last requested is sent as a signed 16-bit value, high byte first. This
+   * is the same as the sum of the distance traveled by both wheels divided by
+   * two. Positive values indicate travel in the forward direction; negative
+   * values indicate travel in the reverse direction. If the value is not
+   * polled frequently enough, it is capped at its minimum or maximum.
+   *
+   * Range: -32768 – 32767
+   *
+   * @note Create 2 and Roomba 500/600 firmware versions prior to 3.3.0 return
+   * an incorrect value for sensors measured in millimeters. To determine the
+   * firmware version on your robot, send a 7 via the serial port to reset it.
+   * The robot will print a long welcome message which will include the
+   * firmware version, for example: r3_robot/tags/release-3.3.0.
    */
   ROOMBA_DISTANCE = 19,
 
   /**
-   * Angle Packet ID: 20 Data Bytes: 2, signed
+   * Angle
+   * Packet ID: 20
+   * Data Bytes: 2, signed
+   *
    * The angle in degrees that Roomba has turned since the angle was last
    * requested is sent as a signed 16-bit value, high byte first.
    * Counter-clockwise angles are positive and clockwise angles are negative.
    * If the value is not polled frequently enough, it is capped at its minimum
-   * bor maximum.
+   * or maximum.
+   *
    * Range: -32768 – 32767
    */
   ROOMBA_ANGLE = 20,
 
   /**
-  Charging State Packet ID: 21 Data Bytes: 1, unsigned
-  This code indicates Roomba’s current charging state.
-  Range: 0 – 5
-  Code Charging State
-  0 Not charging
-  1 Reconditioning Charging
-  2 Full Charging
-  3 Trickle Charging
-  4 Waiting
-  5 Charging Fault Condition
+   * Charging State
+   * Packet ID: 21
+   * Data Bytes: 1, unsigned
+   *
+   * This code indicates Roomba’s current charging state.
+   *
+   * Range: 0 – 5
+   *
+   * | Code | Charging State           |
+   * |------|--------------------------|
+   * | 0    | Not charging             |
+   * | 1    | Reconditioning Charging  |
+   * | 2    | Full Charging            |
+   * | 3    | Trickle Charging         |
+   * | 4    | Waiting                  |
+   * | 5    | Charging Fault Condition |
    */
   ROOMBA_CHARGING_STATE = 21,
 
   /**
-  Voltage Packet ID: 22 Data Bytes: 2, unsigned
-  This code indicates the voltage of Roomba’s battery in millivolts (mV).
-  Range: 0 – 65535 mV
+   * Voltage
+   * Packet ID: 22
+   * Data Bytes: 2, unsigned
+   *
+   * This code indicates the voltage of Roomba’s battery in millivolts (mV).
+   *
+   * Range: 0 – 65535 mV
    */
   ROOMBA_VOLTAGE = 22,
 
   /**
-  Current Packet ID: 23 Data Bytes: 2, signed
-  The current in milliamps (mA) flowing into or out of Roomba’s battery. Negative currents indicate that the
-  current is flowing out of the battery, as during normal running. Positive currents indicate that the current
-  is flowing into the battery, as during charging.
-  Range: -32768 – 32767 mA
+   * Current
+   * Packet ID: 23
+   * Data Bytes: 2, signed
+   *
+   * The current in milliamps (mA) flowing into or out of Roomba’s battery.
+   * Negative currents indicate that the current is flowing out of the battery,
+   * as during normal running. Positive currents indicate that the current is
+   * flowing into the battery, as during charging.
+   *
+   * Range: -32768 – 32767 mA
    */
   ROOMBA_CURRENT = 23,
 
   /**
-  Temperature Packet ID: 24 Data Bytes: 1, signed
-  The temperature of Roomba’s battery in degrees Celsius.
-  Range: -128 – 127
+   * Temperature
+   * Packet ID: 24
+   * Data Bytes: 1, signed
+   *
+   * The temperature of Roomba’s battery in degrees Celsius.
+   *
+   * Range: -128 – 127
    */
   ROOMBA_TEMPERATURE = 24,
 
   /**
-  Battery Charge Packet ID: 25 Data Bytes: 2, unsigned
-  The current charge of Roomba’s battery in milliamp-hours (mAh). The charge value decreases as the
-  battery is depleted during running and increases when the battery is charged.
-  Range: 0 – 65535 mAh
+   * Battery Charge
+   * Packet ID: 25
+   * Data Bytes: 2, unsigned
+   *
+   * The current charge of Roomba’s battery in milliamp-hours (mAh). The charge
+   * value decreases as the battery is depleted during running and increases
+   * when the battery is charged.
+   *
+   * Range: 0 – 65535 mAh
    */
   ROOMBA_BATTERY_CHARGE = 25,
 
   /**
-  Battery Capacity Packet ID: 26 Data Bytes: 2, unsigned
-  The estimated charge capacity of Roomba’s battery in milliamp-hours (mAh).
-  Range: 0 – 65535 mAh
+   * Battery Capacity
+   * Packet ID: 26
+   * Data Bytes: 2, unsigned
+   *
+   * The estimated charge capacity of Roomba’s battery in milliamp-hours (mAh).
+   *
+   * Range: 0 – 65535 mAh
    */
   ROOMBA_BATTERY_CAPACITY = 26,
 
   /**
-  Wall Signal Packet ID: 27 Data Bytes: 2, unsigned
-  The strength of the wall signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-1023.
+   * Wall Signal
+   * Packet ID: 27
+   * Data Bytes: 2, unsigned
+   *
+   * The strength of the wall signal is returned as an unsigned 16-bit value,
+   * high byte first.
+   *
+   * Range: 0-1023.
    */
   ROOMBA_WALL_SIGNAL = 27,
 
   /**
-  Cliff Left Signal Package ID: 28 Data Bytes: 2, unsigned
-  The strength of the cliff left signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-4095
+   * Cliff Left Signal
+   * Package ID: 28
+   * Data Bytes: 2, unsigned
+   *
+   * The strength of the cliff left signal is returned as an unsigned 16-bit
+   * value, high byte first.
+   *
+   * Range: 0-4095
    */
   ROOMBA_CLIFF_LEFT_SIGNAL = 28,
 
   /**
-  Cliff Front Left Signal Package ID: 29 Data Bytes 2, unsigned
-  The strength of the cliff front left signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-4095
+   * Cliff Front Left Signal
+   * Package ID: 29
+   * Data Bytes 2, unsigned
+   *
+   * The strength of the cliff front left signal is returned as an unsigned
+   * 16-bit value, high byte first.
+   *
+   * Range: 0-4095
    */
   ROOMBA_CLIFF_FRONT_LEFT_SIGNAL = 29,
 
   /**
-  Cliff Front Right Signal Package ID: 30 Data Bytes 2, unsigned
-  The strength of the cliff front right signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-4095
+   * Cliff Front Right Signal
+   * Package ID: 30
+   * Data Bytes 2, unsigned
+   *
+   * The strength of the cliff front right signal is returned as an unsigned
+   * 16-bit value, high byte first.
+   *
+   * Range: 0-4095
    */
   ROOMBA_CLIFF_FRONT_RIGHT_SIGNAL = 30,
 
   /**
-  Cliff Right Signal Package ID: 31 Data Bytes 2, unsigned
-  The strength of the cliff right signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-4095
+   * Cliff Right Signal
+   * Package ID: 31
+   * Data Bytes 2, unsigned
+   *
+   * The strength of the cliff right signal is returned as an unsigned 16-bit
+   * value, high byte first.
+   *
+   * Range: 0-4095
    */
   ROOMBA_CLIFF_RIGHT_SIGNAL = 31,
 
   /**
-Unused Packet ID: 32-33 Data Bytes, 3
+   * Unused
+   * Packet ID: 32-33
+   * Data Bytes, 3
    */
   ROOMBA_UNUSED_2 = 32,
 
-  /**
-  Charging Sources Available Packet ID: 34 Data Bytes 1, unsigned
-  Roomba’s connection to the Home Base and Internal Charger are returned as individual bits, as below.
-  Range: 0-3
-   */
   ROOMBA_UNUSED_3 = 33,
 
   /**
-  Charging Sources Available Packet ID: 34 Data Bytes 1, unsigned
-  Roomba’s connection to the Home Base and Internal Charger are returned as individual bits, as below.
-  Range: 0-3
-  1 = charging source present and powered; 0 = charging source not present or not powered.
-  Bit 7 6 5 4 3 2 1 0
-  Value Reserved Home
-  Base
-  Internal
-  Charger
+   * Charging Sources Available
+   * Packet ID: 34
+   * Data Bytes 1, unsigned
+   *
+   * Roomba’s connection to the Home Base and Internal Charger are returned as
+   * individual bits, as below.
+   *
+   * Range: 0-3
+   *
+   * 1 = charging source present and powered;
+   * 0 = charging source not present or not powered.
+   *
+   * | Bit   | 7        | 6 | 5 | 4 | 3    | 2    | 1        | 0       |
+   * |-------|----------|---|---|---|------|------|----------|---------|
+   * | Value | Reserved |   |   |   | Home | Base | Internal | Charger |
    */
   ROOMBA_CHARGER_AVAILABLE = 34,
 
   /**
-  OI Mode Packet ID: 35 Data Bytes 1, unsigned
-  The current OI mode is returned. See table below.
-  Range: 0-3
-  Number Mode
-  0 Off
-  1 Passive
-  2 Safe
-  3 Full
+   * OI Mode
+   * Packet ID: 35
+   * Data Bytes 1, unsigned
+   *
+   * The current OI mode is returned. See table below.
+   *
+   * Range: 0-3
+   *
+   * | Number | Mode    |
+   * |--------|---------|
+   * | 0      | Off     |
+   * | 1      | Passive |
+   * | 2      | Safe    |
+   * | 3      | Full    |
    */
   ROOMBA_OPEN_INTERFACE_MODE = 35,
 
   /**
-  Song Number Packet ID: 36 Data Bytes 1, unsigned
-  The currently selected OI song is returned.
-  Range: 0-15
+   * Song Number
+   * Packet ID: 36
+   * Data Bytes 1, unsigned
+   *
+   * The currently selected OI song is returned.
+   *
+   * Range: 0-15
    */
   ROOMBA_SONG_NUMBER = 36,
 
   /**
-  Song Playing Packet ID: 37 Data Bytes 1, unsigned
-  The state of the OI song player is returned. 1 = OI song currently playing; 0 = OI song not playing.
-  Range: 0-1
+   * Song Playing
+   * Packet ID: 37
+   * Data Bytes 1, unsigned
+   *
+   * The state of the OI song player is returned. 1 = OI song currently
+   * playing; 0 = OI song not playing.
+   *
+   * Range: 0-1
    */
   ROOMBA_SONG_PLAYING = 37,
 
   /**
-  Number of Stream Packets Packet ID: 38 Data Bytes 1, unsigned
-  The number of data stream packets is returned.
-  Range: 0-108
+   * Number of Stream
+   * Packets Packet ID: 38
+   * Data Bytes 1, unsigned
+   *
+   * The number of data stream packets is returned.
+   *
+   * Range: 0-108
    */
   ROOMBA_OI_STREAM_NUM_PACKETS = 38,
 
   /**
-  Requested Velocity Packet ID: 39 Data Bytes 2, signed
-  The velocity most recently requested with a Drive command is returned as a signed 16-bit number, high
-  byte first.
-  Range: -500 - 500 mm/s
+   * Requested Velocity
+   * Packet ID: 39
+   * Data Bytes 2, signed
+   *
+   * The velocity most recently requested with a Drive command is returned as a
+   * signed 16-bit number, high byte first.
+   *
+   * Range: -500 - 500 mm/s
    */
   ROOMBA_VELOCITY = 39,
 
   /**
-  Requested Radius Packet ID: 40 Data Bytes 2, signed
-  The radius most recently requested with a Drive command is returned as a signed 16-bit number, high
-  byte first.
-  Range: -32768 - 32767 mm
-  NOTE: Create 2 and Roomba 500/600 firmware versions prior to 3.3.0 return an incorrect value for
-  sensors measured in millimeters. To determine the firmware version on your robot, send a 7 via the serial
-  port to reset it. The robot will print a long welcome message which will include the firmware version, for
-  example: r3_robot/tags/release-3.3.0.
+   * Requested Radius
+   * Packet ID: 40
+   * Data Bytes 2, signed
+   *
+   * The radius most recently requested with a Drive command is returned as a
+   * signed 16-bit number, high byte first.
+   *
+   * Range: -32768 - 32767 mm
+   *
+   * @note Create 2 and Roomba 500/600 firmware versions prior to 3.3.0 return
+   * an incorrect value for sensors measured in millimeters. To determine the
+   * firmware version on your robot, send a 7 via the serial port to reset it.
+   * The robot will print a long welcome message which will include the
+   * firmware version, for example: r3_robot/tags/release-3.3.0.
    */
   ROOMBA_RADIUS = 40,
 
   /**
-  Requested Right Velocity Packet ID: 41 Data Bytes 2, signed
-  The right wheel velocity most recently requested with a Drive Direct command is returned as a signed
-  16-bit number, high byte first.
-  Range: -500 - 500 mm/s
+   * Requested Right Velocity
+   * Packet ID: 41
+   * Data Bytes 2, signed
+   *
+   * The right wheel velocity most recently requested with a Drive Direct
+   * command is returned as a signed 16-bit number, high byte first.
+   *
+   * Range: -500 - 500 mm/s
    */
   ROOMBA_VELOCITY_RIGHT = 41,
 
   /**
-  Requested Left Velocity Packet ID: 42 Data Bytes 2, signed
-  The left wheel velocity most recently requested with a Drive Direct command is returned as a signed 16-
-  bit number, high byte first.
-  Range: -500 - 500 mm/s
+   * Requested Left Velocity
+   * Packet ID: 42
+   * Data Bytes 2, signed
+   * The left wheel velocity most recently requested with a Drive Direct
+   * command is returned as a signed 16-bit number, high byte first.
+   *
+   * Range: -500 - 500 mm/s
    */
   ROOMBA_VELOCITY_LEFT = 42,
 
   /**
-  Left Encoder Counts Packet ID: 43 Data Bytes 2, unsigned
-  The cumulative number of raw left encoder counts is returned as an unsigned 16-bit number, high byte
-  first. This number will roll over to 0 after it passes 65535.
-  Range: 0 - 65535
+   * Left Encoder Counts
+   * Packet ID: 43
+   * Data Bytes 2, unsigned
+   *
+   * The cumulative number of raw left encoder counts is returned as an
+   * unsigned 16-bit number, high byte first. This number will roll over to 0
+   * after it passes 65535.
+   *
+   * Range: 0 - 65535
    */
   ROOMBA_ENCODER_COUNTS_LEFT = 43,
 
   /**
-  Right Encoder Counts Packet ID: 44 Data Bytes 2, unsigned
-  The cumulative number of raw right encoder counts is returned as an unsigned 16-bit number, high byte
-  first. This number will roll over to 0 after it passes 65535.
-  Range: 0 - 65535
+   * Right Encoder Counts
+   * Packet ID: 44
+   * Data Bytes 2, unsigned
+   * The cumulative number of raw right encoder counts is returned as an
+   * unsigned 16-bit number, high byte first. This number will roll over to 0
+   * after it passes 65535.
+   *
+   * Range: 0 - 65535
    */
   ROOMBA_ENCODER_COUNTS_RIGHT = 44,
 
   /**
-  Light Bumper Package ID: 45 Data Bytes 1, unsigned
-  The light bumper detections are returned as individual bits.
-  Bit 7 6 5 4 3 2 1 0
-  Value Reserved Lt
-  Bumper
-  Right?
-  Lt
-  Bumper
-  Front
-  Right?
-  Lt
-  Bumper
-  Center
-  Right?
-  Lt
-  Bumper
-  Center
-  Left?
-  Lt
-  Bumper
-  Front
-  Left?
-  Lt
-  Bumper
-  Left?
-
-  Range: 0-127
+   * Light Bumper
+   * Package ID: 45
+   * Data Bytes 1, unsigned
+   *
+   * The light bumper detections are returned as individual bits.
+   *
+   * | Bit   | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+   * |-------|---|---|---|---|---|---|---|---|
+   * | Value | Reserved | Lt Bumper Right? | Lt Bumper Front Right? | Lt Bumper Center Right? | Lt Bumper Center Left? | Lt Bumper Front Left? | Lt Bumper Left? |
+   *
+   * Range: 0-127
    */
   ROOMBA_LIGHT_BUMPER = 45,
 
   /**
-  Light Bump Left Signal Package ID: 46 Data Bytes 2, unsigned
-  The strength of the light bump left signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-4095
+   * Light Bump Left Signal
+   * Package ID: 46
+   * Data Bytes 2, unsigned
+   *
+   * The strength of the light bump left signal is returned as an unsigned
+   * 16-bit value, high byte first.
+   *
+   * Range: 0-4095
    */
   ROOMBA_LIGHT_BUMP_LEFT = 46,
 
   /**
-  Light Bump Front Left Signal Package ID: 47 Data Bytes 2, unsigned
-  The strength of the light bump front left signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-4095
+   * Light Bump Front Left Signal
+   * Package ID: 47
+   * Data Bytes 2, unsigned
+   *
+   * The strength of the light bump front left signal is returned as an
+   * unsigned 16-bit value, high byte first.
+   *
+   * Range: 0-4095
    */
   ROOMBA_LIGHT_BUMP_FRONT_LEFT = 47,
 
   /**
-  Light Bump Center Left Signal Package ID: 48 Data Bytes 2, unsigned
-  The strength of the light bump center left signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-4095
+   * Light Bump Center Left Signal
+   * Package ID: 48
+   * Data Bytes 2, unsigned
+   *
+   * The strength of the light bump center left signal is returned as an
+   * unsigned 16-bit value, high byte first.
+   *
+   * Range: 0-4095
    */
   ROOMBA_LIGHT_BUMP_CENTER_LEFT = 48,
 
   /**
-  Light Bump Center Right Signal Package ID: 49 Data Bytes 2, unsigned
-  The strength of the light bump center right signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-4095
+   * Light Bump Center Right Signal
+   * Package ID: 49
+   * Data Bytes 2, unsigned
+   *
+   * The strength of the light bump center right signal is returned as an
+   * unsigned 16-bit value, high byte first.
+   *
+   * Range: 0-4095
    */
   ROOMBA_LIGHT_BUMP_CENTER_RIGHT = 49,
 
   /**
-  Light Bump Front Right Signal Package ID: 50 Data Bytes 2, unsigned
-  The strength of the light bump front right signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-4095
+   * Light Bump Front Right Signal
+   * Package ID: 50
+   * Data Bytes 2, unsigned
+   *
+   * The strength of the light bump front right signal is returned as an
+   * unsigned 16-bit value, high byte first.
+   *
+   * Range: 0-4095
    */
   ROOMBA_LIGHT_BUMP_FRONT_RIGHT = 50,
 
   /**
-  Light Bump Right Signal Package ID: 51 Data Bytes 2, unsigned
-  The strength of the light bump right signal is returned as an unsigned 16-bit value, high byte first.
-  Range: 0-4095
+   * Light Bump Right Signal
+   * Package ID: 51
+   * Data Bytes 2, unsigned
+   *
+   * The strength of the light bump right signal is returned as an
+   * unsigned 16-bit value, high byte first.
+   *
+   * Range: 0-4095
    */
   ROOMBA_LIGHT_BUMP_RIGHT = 51,
 
   /**
-  Infrared Character Left Packet ID: 52 Data Bytes: 1, unsigned
-  This value identifies the 8-bit IR character currently being received by Roomba’s left receiver. A value of
-  0 indicates that no character is being received. These characters include those sent by the Roomba
-  Remote, Dock, Virtual Walls, Create robots using the Send-IR command, and user-created devices.
-  Range: 0 – 255
+   * Infrared Character Left
+   * Packet ID: 52
+   * Data Bytes: 1, unsigned
+   *
+   * This value identifies the 8-bit IR character currently being received by
+   * Roomba’s left receiver. A value of 0 indicates that no character is being
+   * received. These characters include those sent by the Roomba Remote, Dock,
+   * Virtual Walls, Create robots using the Send-IR command, and user-created
+   * devices.
+   *
+   * Range: 0 – 255
    */
   ROOMBA_IR_OPCODE_LEFT = 52,
 
   /**
-  Infrared Character Right Packet ID: 53 Data Bytes: 1, unsigned
-  This value identifies the 8-bit IR character currently being received by Roomba’s right receiver. A value of
-  0 indicates that no character is being received. These characters include those sent by the Roomba
-  Remote, Dock, Virtual Walls, Create robots using the Send-IR command, and user-created devices.
-  Range: 0 – 255
+   * Infrared Character Right
+   * Packet ID: 53
+   * Data Bytes: 1, unsigned
+   *
+   * This value identifies the 8-bit IR character currently being received by
+   * Roomba’s right receiver. A value of 0 indicates that no character is being
+   * received. These characters include those sent by the Roomba Remote, Dock,
+   * Virtual Walls, Create robots using the Send-IR command, and user-created
+   * devices.
+   *
+   * Range: 0 – 255
    */
   ROOMBA_IR_OPCODE_RIGHT = 53,
 
   /**
-  Left Motor Current Packet ID: 54 Data Bytes: 2, signed
-  This returns the current being drawn by the left wheel motor as an unsigned 16 bit value, high byte first.
-  Range: -32768 – 32767 mA
+   * Left Motor Current
+   * Packet ID: 54
+   * Data Bytes: 2, signed
+   *
+   * This returns the current being drawn by the left wheel motor as an
+   * unsigned 16 bit value, high byte first.
+   *
+   * Range: -32768 – 32767 mA
    */
   ROOMBA_LEFT_MOTOR_CURRENT = 54,
 
   /**
-  Right Motor Current Packet ID: 55 Data Bytes: 2, signed
-  This returns the current being drawn by the right wheel motor as an unsigned 16 bit value, high byte
-  first.
-  Range: -32768 – 32767 mA
+   * Right Motor Current
+   * Packet ID: 55
+   * Data Bytes: 2, signed
+   *
+   * This returns the current being drawn by the right wheel motor as an
+   * unsigned 16 bit value, high byte first.
+   *
+   * Range: -32768 – 32767 mA
    */
   ROOMBA_RIGHT_MOTOR_CURRENT = 55,
 
   /**
-  Main Brush Motor Current Packet ID: 56 Data Bytes: 2, signed
-  This returns the current being drawn by the main brush motor as an unsigned 16 bit value, high byte
-  first.
-  Range: -32768 – 32767 mA
+   * Main Brush Motor Current
+   * Packet ID: 56
+   * Data Bytes: 2, signed
+   *
+   * This returns the current being drawn by the main brush motor as an
+   * unsigned 16 bit value, high byte first.
+   *
+   * Range: -32768 – 32767 mA
    */
   ROOMBA_MAIN_BRUSH_CURRENT =56,
 
   /**
-  Side Brush Motor Current Packet ID: 57 Data Bytes: 2, signed
-  This returns the current being drawn by the side brush motor as an unsigned 16 bit value, high byte first.
-  Range: -32768 – 32767 mA
+   * Side Brush Motor Current
+   * Packet ID: 57
+   * Data Bytes: 2, signed
+   * This returns the current being drawn by the side brush motor as an
+   * unsigned 16 bit value, high byte first.
+   *
+   * Range: -32768 – 32767 mA
    */
   ROOMBA_SIDE_BRUSH_CURRENT = 57,
 
   /**
-  Stasis Packet ID: 58 Data Bytes: 1
-  The stasis caster sensor returns 1 when the robot is making forward progress and 0 when it is not. This
-  always returns 0 when the robot is turning, driving backward, or not driving. Range: 0 – 1
+   * Stasis
+   * Packet ID: 58
+   * Data Bytes: 1
+   *
+   * The stasis caster sensor returns 1 when the robot is making forward
+   * progress and 0 when it is not. This always returns 0 when the robot is
+   * turning, driving backward, or not driving. Range: 0 – 1
    */
   ROOMBA_STASIS = 58,
 
 } ROOMBA_PACKET_CODE;
 
 typedef enum {
-  G0,
-  G1,
-  G2,
-  G3,
-  G4,
-  G5,
-  G6,
+  G0 = 0,
+  G1 = 1,
+  G2 = 2,
+  G3 = 3,
+  G4 = 4,
+  G5 = 5,
+  G6 = 6,
   ALL_PACKETS = 100,
-  G101,
-  G106,
-  G107
+  G101 =101,
+  G106 = 106,
+  G107 = 107,
 } ROOMBA_PACKET_GROUP;
 
 typedef enum _roomba_op_mode {
@@ -1506,7 +1732,7 @@ typedef enum {
 
 typedef struct _pkt_group_0 {
   uint8_t bumps_wheeldrops;
-  uint8_t roomba_wall;
+  uint8_t wall;
   uint8_t cliff_left;
   uint8_t cliff_front_left;
   uint8_t cliff_front_right;
@@ -1529,7 +1755,7 @@ typedef struct _pkt_group_0 {
 
 typedef struct _pkt_group_1 {
   uint8_t bumps_wheeldrops;
-  uint8_t roomba_wall;
+  uint8_t wall;
   uint8_t cliff_left;
   uint8_t cliff_front_left;
   uint8_t cliff_front_right;
@@ -1580,7 +1806,7 @@ typedef struct _pkt_group_5 {
 
 typedef struct _pkt_group_6 {
   uint8_t bumps_wheeldrops;
-  uint8_t roomba_wall;
+  uint8_t wall;
   uint8_t cliff_left;
   uint8_t cliff_front_left;
   uint8_t cliff_front_right;
@@ -1619,7 +1845,7 @@ typedef struct _pkt_group_6 {
 
 typedef struct _pkt_group_100 {
   uint8_t bumps_wheeldrops;
-  uint8_t roomba_wall;
+  uint8_t wall;
   uint8_t cliff_left;
   uint8_t cliff_front_left;
   uint8_t cliff_front_right;
