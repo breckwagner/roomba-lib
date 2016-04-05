@@ -53,7 +53,9 @@
  */
 typedef enum _roomba_op_code {
   /**
-   * Reset | Opcode: 7 | Data Bytes: 0
+   * Reset
+   * Opcode: 7
+   * Data Bytes: 0
    *
    * This command resets the robot, as if you had removed and reinserted the
    * battery.
@@ -65,8 +67,8 @@ typedef enum _roomba_op_code {
   ROOMBA_RESET = 7,
 
   /**
-   * Start |
-   * Opcode: 128 |
+   * Start
+   * Opcode: 128
    * Data Bytes: 0
    *
    * This command starts the OI. You must always send the Start command before
@@ -79,8 +81,8 @@ typedef enum _roomba_op_code {
   ROOMBA_START = 128,
 
   /**
-   * Baud |
-   * Opcode: 129 |
+   * Baud
+   * Opcode: 129
    * Data Bytes: 1
    *
    * This command sets the baud rate in bits per second (bps) at which OI
@@ -216,8 +218,8 @@ typedef enum _roomba_op_code {
   ROOMBA_MAX = 136,
 
   /**
-   * Drive |
-   * Opcode: 137 |
+   * Drive
+   * Opcode: 137
    * Data Bytes: 4
    *
    * This command controls Roomba’s drive wheels. It takes four data bytes,
@@ -275,18 +277,9 @@ typedef enum _roomba_op_code {
    *   - Bits 3 & 4: 0 = motor’s default direction, 1 = motor’s opposite
    *     direction. Default direction for the side brush is counterclockwise.
    * Default direction for the main brush/flapper is inward.
-   * | Bit  | 7        | 6          | 5         | 4 | 3 | 2 | 1 | 0 |
-   * |Value | Reserved | Main Brush | Direction |
-  Side
-  Brush
-
-  Clockwise?
-
-  Main
-  Brush
-
-  Vacuum Side
-  Brush
+   * | Bit   |  7  |  6  |  5 | 4 | 3 | 2 | 1 | 0 |
+   * |-------|-----|-----|----|---|---|---|---|---|
+   * | Value | Reserved |  |  | Main Brush Direction | Side Brush Clockwise? | Main Brush | Vacuum | Side Brush |
    *
    * Example:
    * To turn on the main brush inward and the side brush clockwise, send: [138]
@@ -312,11 +305,13 @@ typedef enum _roomba_op_code {
    *     - Power uses a bicolor (red/green) LED.
    * The intensity and color of this LED can be controlled with 8-bit
    * resolution.
+   *
    * LED Bits (0-255)
-   * Bit 7 6 5 4 3 2 1 0
-   * Value Reserved Check
-   * Robot
-   * Dock Spot Debris
+   * 
+   * | Bit   | 7        | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+   * |-------|----------|---|---|---|---|---|---|---|
+   * | Value | Reserved |   |   |   | Check Robot | Dock | Spot | Debris |
+   * 
    * Power LED Color (0 – 255)
    * 0 = green, 255 = red. Intermediate values are intermediate colors (orange,
    * yellow, etc).
@@ -332,8 +327,9 @@ typedef enum _roomba_op_code {
   ROOMBA_LEDS = 139,
 
   /**
-   * Song Opcode: 140 Data Bytes: 2N+2, where N is the number of notes in the
-   * song
+   * Song
+   * Opcode: 140
+   * Data Bytes: 2N+2, where N is the number of notes in the song
    *
    * This command lets you specify up to four songs to the OI that you can play
    * at a later time. Each song is associated with a song number. The Play
@@ -399,7 +395,9 @@ typedef enum _roomba_op_code {
   ROOMBA_SONG = 140,
 
   /**
-   * Play Opcode: 141 Data Bytes: 1
+   * Play
+   * Opcode: 141
+   * Data Bytes: 1
    *
    * This command lets you select a song to play from the songs added to Roomba
    * using the Song command.
@@ -414,7 +412,9 @@ typedef enum _roomba_op_code {
   ROOMBA_PLAY = 141,
 
   /**
-   * Sensors Opcode: 142 Data Bytes: 1
+   * Sensors
+   * Opcode: 142
+   * Data Bytes: 1
    *
    * This command requests the OI to send a packet of sensor data bytes. There
    * are 58 different sensor data packets. Each provides a value of a specific
@@ -431,7 +431,10 @@ typedef enum _roomba_op_code {
   ROOMBA_SENSORS = 142,
 
   /**
-   * Seek Dock Opcode: 143 Data Bytes: 0
+   * Seek Dock
+   * Opcode: 143
+   * Data Bytes: 0
+   * 
    * This command directs Roomba to drive onto the dock the next time it
    * encounters the docking beams. This is the same as pressing Roomba’s Dock
    * button, and will pause a cleaning cycle if one is already in progress.
@@ -442,7 +445,9 @@ typedef enum _roomba_op_code {
   ROOMBA_SEEK_DOCK = 143,
 
   /**
-   * PWM Motors Opcode: 144 Data Bytes: 3
+   * PWM Motors
+   * Opcode: 144
+   * Data Bytes: 3
    *
    * This command lets you control the speed of Roomba’s main brush, side
    * brush, and vacuum independently. With each data byte, you specify the duty
@@ -462,7 +467,9 @@ typedef enum _roomba_op_code {
   ROOMBA_PWM_MOTORS = 144,
 
   /**
-   * Drive Direct Opcode: 145 Data Bytes: 4
+   * Drive Direct
+   * Opcode: 145
+   * Data Bytes: 4
    *
    * This command lets you control the forward and backward motion of Roomba’s
    * drive wheels independently. It takes four data bytes, which are
@@ -483,7 +490,9 @@ typedef enum _roomba_op_code {
   ROOMBA_DRIVE_DIRECT = 145,
 
   /**
-   * Drive PWM | Opcode: 146 | Data Bytes: 4
+   * Drive PWM
+   * Opcode: 146
+   * Data Bytes: 4
    *
    * This command lets you control the raw forward and backward motion of
    * Roomba’s drive wheels independently. It takes four data bytes, which are
@@ -511,7 +520,9 @@ typedef enum _roomba_op_code {
   #endif
 
   /**
-   * Stream Opcode: 148 Data Bytes: N + 1, where N is the number of packets
+   * Stream 
+   * Opcode: 148 
+   * Data Bytes: N + 1, where N is the number of packets
    * requested.
    *
    * This command starts a stream of data packets. The list of packets
@@ -559,8 +570,9 @@ typedef enum _roomba_op_code {
   ROOMBA_STREAM = 148,
 
   /**
-   * Query List Opcode: 149 Data Bytes: N + 1, where N is the number of packets
-   * requested.
+   * Query List
+   * Opcode: 149
+   * Data Bytes: N + 1, where N is the number of packets requested.
    *
    * This command lets you ask for a list of sensor packets. The result is
    * returned once, as in the Sensors command. The robot returns the packets in
@@ -615,8 +627,9 @@ typedef enum _roomba_op_code {
   SEND_IR = 151,
 
   /**
-   * Script Opcode: 152 Data Bytes: N + 1 where N is the number of bytes in the
-   * script.
+   * Script
+   * Opcode: 152
+   * Data Bytes: N + 1 where N is the number of bytes in the script.
    *
    * This command specifies a script to be played later. A script consists of
    * OI commands and can be up to 100 bytes long. There is no flow control, but
@@ -648,7 +661,9 @@ typedef enum _roomba_op_code {
   SCRIPT = 152,
 
   /**
-   * Play Script Opcode: 153 Data Bytes: 0
+   * Play Script
+   * Opcode: 153
+   * Data Bytes: 0
    *
    * This command loads a previously defined OI script into the serial input
    * queue for playback.
@@ -680,7 +695,7 @@ typedef enum _roomba_op_code {
    * change its state, nor does it react to any inputs, serial or otherwise.
    * These commands are intended for use in scripting only.
    *
-   * @deprecated in OIv2
+   * @deprecated
    */
   SHOW_SCRIPT = 154,
 
@@ -697,6 +712,8 @@ typedef enum _roomba_op_code {
    *   - Changes mode to: No Change
    *   - Wait Time data byte 1: Time (0 - 255)
    * Specifies time to wait in tenths of a second with a resolution of 15 ms.
+   * 
+   * @deprecated
    */
   WAIT_TIME = 155,
 
@@ -718,6 +735,8 @@ typedef enum _roomba_op_code {
    *   - Changes mode to: No Change
    *   - Wait Distance data bytes 1-2: 16-bit signed distance in mm, high byte
    *     first (-32767 -32768)
+   * 
+   * @deprecated
    */
   WAIT_DISTANCE = 156,
 
@@ -738,6 +757,8 @@ typedef enum _roomba_op_code {
    *   - Changes mode to: No Change
    *   - Wait Angle data bytes 1-2: 16-bit signed angle in degrees, high byte
    *     first (-32767 -32768)
+   * 
+   * @deprecated
    */
   WAIT_ANGLE = 157,
 
@@ -753,7 +774,7 @@ typedef enum _roomba_op_code {
    *   - Available in modes: Passive, Safe, or Full
    *   - Changes mode to: No Change
    *   - Wait Event data byte 1: Signed event number (1 to 20 and -1 to -20)
-
+   *
    * To wait for the inverse of an event, send the negative of its number using
    * two’s complement notation. For example, to wait for no bumps, send the
    * serial byte sequence [158] [-5], which is equivalent to [158] [251].
@@ -783,6 +804,8 @@ typedef enum _roomba_op_code {
    * | Digital Input 2   | 20     | 236                            |
    * | Digital Input 3   | 21     | 235                            |
    * | OI Mode = Passive | 22     | 234                            |
+   * 
+   * @deprecated
    */
   WAIT_EVENT = 158,
 
@@ -879,7 +902,10 @@ typedef enum _roomba_op_code {
   ROOMBA_DIGIT_LEDS_ASCII = 164,
 
   /**
-   * Buttons Opcode: 165 Data Bytes: 1
+   * Buttons
+   * Opcode: 165
+   * Data Bytes: 1
+   * 
    * This command lets you push Roomba’s buttons. The buttons will
    * automatically release after 1/6th of a second.
    *   - Serial sequence: [165] [Buttons]
@@ -914,7 +940,10 @@ typedef enum _roomba_op_code {
   ROOMBA_SCHEDULE = 167,
 
   /**
-   * Set Day/Time Opcode: 168 Data Bytes: 3
+   * Set Day/Time
+   * Opcode: 168
+   * Data Bytes: 3
+   * 
    * This command sets Roomba’s clock.
    *   - Serial sequence: [168] [Day] [Hour] [Minute]
    *   - Available in modes: Passive, Safe, or Full.
@@ -935,7 +964,10 @@ typedef enum _roomba_op_code {
   ROOMBA_SET_DAY_TIME = 168,
 
   /**
-   * Stop Opcode: 173 Data Bytes: 0
+   * Stop
+   * Opcode: 173
+   * Data Bytes: 0
+   * 
    * This command stops the OI. All streams will stop and the robot will no
    * longer respond to commands.
    * Use this command when you are finished working with the robot.
