@@ -112,13 +112,12 @@ int is_valid_roomba_command (uint8_t command[], uint16_t size) {
 
         (command[3]<<8|command[4]) <= 2000)||
 
-        (command[3]<<8|command[4])==ROOMBA_ANGLE_STRAIGHT_POSITIVE ||
+        (command[3]<<8|command[4])==ROOMBA_RADIUS_STRAIGHT_POSITIVE ||
 
-        (command[3]<<8|command[4])==ROOMBA_ANGLE_STRAIGHT_NEGATIVE);
+        (command[3]<<8|command[4])==ROOMBA_RADIUS_STRAIGHT_NEGATIVE);
 
     default: return false;
 
   }
 
 }
-

@@ -27,24 +27,46 @@
  * Definitions
  ******************************************************************************/
 
-#define ROOMBA_INTERFACE_VERSION 2
-
+/**
+ * ROOMBA_INTERFACE_VERSION can asume several values and must be definied for
+ * this library to work properly. The number corresponds to the version of the
+ * interface. Also, features that have lost forward support are marked in this
+ * doc as deprecated but this is only done for convinience.
+ *
+ * | # | Name                                                                  |
+ * |---|-----------------------------------------------------------------------|
+ * | 0 | Roomba® Serial Command Interface (SCI)                                |
+ * | 1 | Create® Open Interface (OI)                                           |
+ * | 2 | Create® 2 Open Interface (OI)                                         |
+ *
+ * The easiest way to define this value is to include it in a makefile as a
+ * compiler flag:
+ *
+ * '''bash
+ * -D ROOMBA_INTERFACE_VERSION=*#*
+ * '''
+ *
+ * @note If it is note defined, the version will default to 2.
+ */
+#ifndef ROOMBA_INTERFACE_VERSION
+  #define ROOMBA_INTERFACE_VERSION 2
+#endif
 
 #if ROOMBA_INTERFACE_VERSION==2
   #define ROOMBA_DEFAULT_BAUD_RATE 115200
 #elif ROOMBA_INTERFACE_VERSION==1
   #define ROOMBA_DEFAULT_BAUD_RATE 57600
 #else
-  #warning Interface type not specified
+  #warning Interface version not specified
 #endif
 
 #define LOW_BYTE(v)   ((unsigned char) (v))
 #define HIGH_BYTE(v)  ((unsigned char) (((unsigned int) (v)) >> 8))
-#define ROOMBA_ANGLE_STRAIGHT_NEGATIVE 0x8000
-#define ROOMBA_ANGLE_STRAIGHT_POSITIVE 0x7FFF
-#define ROOMBA_ANGLE_STRAIGHT ROOMBA_ANGLE_STRAIGHT_POSITIVE
-#define ROOMBA_ANGLE_CLOCKWISE 0xFFFF
-#define ROOMBA_ANGLE_COUNTER_CLOCKWISE 0x0001
+#define ROOMBA_RADIUS_STRAIGHT_NEGATIVE 0x8000
+#define ROOMBA_RADIUS_STRAIGHT_POSITIVE 0x7FFF
+#define ROOMBA_RADIUS_STRAIGHT ROOMBA_RADIUS_STRAIGHT_POSITIVE
+#define ROOMBA_RADIUS_CLOCKWISE 0xFFFF
+#define ROOMBA_RADIUS_COUNTER_CLOCKWISE 0x0001
 
 /**
  * @brief OP_CODE enum
@@ -63,6 +85,8 @@ typedef enum _roomba_op_code {
    *   - Available in modes: Always available.
    *   - Changes mode to: Off. You will have to send [128] again to re-enter
    *     Open Interface mode.
+   *
+   * @since 0 (SCI)
    */
   ROOMBA_RESET = 7,
 
@@ -77,6 +101,8 @@ typedef enum _roomba_op_code {
    *   - Available in modes: Passive, Safe, or Full
    *   - Changes mode to: Passive. Roomba beeps once to acknowledge it is
    *     starting * from “off” mode.
+   *
+   * @since 0 (SCI)
    */
   ROOMBA_START = 128,
 
@@ -113,6 +139,8 @@ typedef enum _roomba_op_code {
    * | 9         | 38400            |
    * | 10        | 57600            |
    * | 11        | 115200           |
+   *
+   * @since 0 (SCI)
    */
   ROOMBA_BAUD = 129,
 
@@ -126,6 +154,10 @@ typedef enum _roomba_op_code {
    * be in passive mode to accept this command. This command puts the SCI in
    * safe mode.
    * Serial sequence: [130]
+   *
+   * @since 0 (SCI)
+   *
+   * @deprecated
    */
   ROOMBA_CONTROL = 130,
 
@@ -140,8 +172,11 @@ typedef enum _roomba_op_code {
    *   - Serial sequence: [131]
    *   - Available in modes: Passive, Safe, or Full
    *   - Changes mode to: Safe
+   *
    * @note The effect and usage of the Control command (130) are identical to
    * the Safe command (131).
+   *
+   * @since 0 (SCI)
    */
   ROOMBA_SAFE = 131,
 
@@ -158,7 +193,10 @@ typedef enum _roomba_op_code {
    *   - Serial sequence: [132]
    *   - Available in modes: Passive, Safe, or Full
    *   - Changes mode to: Full
+   *
    * @note Use the Start command (128) to change the mode to Passive
+   *
+   * @since 0 (SCI)
    */
   ROOMBA_FULL = 132,
 
@@ -172,6 +210,8 @@ typedef enum _roomba_op_code {
    *   - Serial sequence: [133]
    *   - Available in modes: Passive, Safe, or Full
    *   - Changes mode to: Passive
+   *
+   * @since 0 (SCI)
    */
   ROOMBA_POWER = 133,
 
@@ -186,8 +226,26 @@ typedef enum _roomba_op_code {
    *   - Serial sequence: [134]
    *   - Available in modes: Passive, Safe, or Full
    *   - Changes mode to: Passive
+   *
+   * @since 0
    */
   ROOMBA_SPOT = 134,
+
+  #if ROOMBA_INTERFACE_VERSION==1
+
+  /**
+   * Cover
+   * Opcode: 135
+   * Data Bytes: 0
+   *
+   * This command starts the Cover demo.
+   *   - Serial sequence: [135]
+   *   - Available in modes: Passive, Safe, or Full
+   *   - Changes mode to: Passive
+   */
+  ROOMBA_COVER = 135,
+
+  #elif ROOMBA_INTERFACE_VERSION==2
 
   /**
    * Clean
@@ -203,6 +261,82 @@ typedef enum _roomba_op_code {
    */
   ROOMBA_CLEAN = 135,
 
+  #endif
+
+  #if ROOMBA_INTERFACE_VERSION==1
+
+  /**
+   * Demo
+   * Opcode: 136
+   * Data Bytes: 1
+   *
+   * This command starts the requested built-in demo.
+   *   - Serial sequence: [136][Which-demo]
+   *   - Available in modes: Passive, Safe, or Full
+   *   - Changes mode to: Passive
+   *   - Demo data byte 1: Demo number (-1 - 9)
+   *
+
+   Demo Names, Descriptions and Numbers
+
+   * | Number  | Demo           | Description |
+   * |---------|----------------|-------------|
+   * |-1 (255) | Abort          | current demo Stops the demo that Create is currently performing. |
+
+   * | 0       | Cover          | Create attempts to cover an entire room using a combination of behaviors, such as random bounce, wall following, and spiraling. |
+
+   * | 1       | Cover and Dock | Identical to the Cover demo, with one exception. If Create sees an infrared signal from an iRobot Home Base, it uses that signal to dock with the Home Base and recharge itself. |
+
+   * | 2       | Spot Cover     | Create covers an area around its starting position by spiraling outward, then inward. |
+
+   * | 3       | Mouse          | Create drives in search of a wall. Once a wall is found, Create drives along the wall, traveling around circumference of the room. |
+
+   * | 4 Drive Figure Eight Create continuously drives in a figure 8
+   pattern.
+
+   * | 5 Wimp Create drives forward when pushed from
+   behind. If Create hits an obstacle while
+   driving, it drives away from the obstacle.
+
+   * | 6 Home Create drives toward an iRobot Virtual
+   @todo formating
+   Wall as long as the back and sides of
+   the virtual wall receiver are blinded by
+   black electrical tape.
+   A Virtual Wall emits infrared signals
+   that Create sees with its Omnidirectional
+   Infrared Receiver, located on top of the
+   bumper.
+   If you want Create to home in on a
+   Virtual Wall, cover all but a small
+   opening in the front of the infrared
+   receiver with black electrical tape.
+   Create spins to locate a virtual wall,
+   then drives toward it. Once Create hits
+   the wall or another obstacle, it stops.
+   Number Demo Description
+   7 Tag Identical to the Home demo, except
+   Create drives into multiple virtual walls
+   by bumping into one, turning around,
+   driving to the next virtual wall, bumping
+   into it and turning around to bump into
+   the next virtual wall.
+   8 Pachelbel Create plays the notes of Pachelbel’s
+   Canon in sequence when cliff sensors
+   are activated.
+   9 Banjo Create plays a note of a chord for each
+   of its four cliff sensors. Select the
+   chord using the bumper, as follows:
+   • No bumper: G major.
+   • Right/left bumper: D major 7
+   • Both bumpers (center): C major
+
+   * @deprecated
+   */
+  ROOMBA_DEMO = 136,
+
+  #elif ROOMBA_INTERFACE_VERSION==2
+
   /**
    * Max
    * Opcode: 136
@@ -216,6 +350,8 @@ typedef enum _roomba_op_code {
    *   - Changes mode to: Passive
    */
   ROOMBA_MAX = 136,
+
+  #endif
 
   /**
    * Drive
@@ -307,11 +443,11 @@ typedef enum _roomba_op_code {
    * resolution.
    *
    * LED Bits (0-255)
-   * 
+   *
    * | Bit   | 7        | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
    * |-------|----------|---|---|---|---|---|---|---|
    * | Value | Reserved |   |   |   | Check Robot | Dock | Spot | Debris |
-   * 
+   *
    * Power LED Color (0 – 255)
    * 0 = green, 255 = red. Intermediate values are intermediate colors (orange,
    * yellow, etc).
@@ -434,7 +570,7 @@ typedef enum _roomba_op_code {
    * Seek Dock
    * Opcode: 143
    * Data Bytes: 0
-   * 
+   *
    * This command directs Roomba to drive onto the dock the next time it
    * encounters the docking beams. This is the same as pressing Roomba’s Dock
    * button, and will pause a cleaning cycle if one is already in progress.
@@ -520,8 +656,8 @@ typedef enum _roomba_op_code {
   #endif
 
   /**
-   * Stream 
-   * Opcode: 148 
+   * Stream
+   * Opcode: 148
    * Data Bytes: N + 1, where N is the number of packets
    * requested.
    *
@@ -712,7 +848,7 @@ typedef enum _roomba_op_code {
    *   - Changes mode to: No Change
    *   - Wait Time data byte 1: Time (0 - 255)
    * Specifies time to wait in tenths of a second with a resolution of 15 ms.
-   * 
+   *
    * @deprecated
    */
   WAIT_TIME = 155,
@@ -735,7 +871,7 @@ typedef enum _roomba_op_code {
    *   - Changes mode to: No Change
    *   - Wait Distance data bytes 1-2: 16-bit signed distance in mm, high byte
    *     first (-32767 -32768)
-   * 
+   *
    * @deprecated
    */
   WAIT_DISTANCE = 156,
@@ -757,7 +893,7 @@ typedef enum _roomba_op_code {
    *   - Changes mode to: No Change
    *   - Wait Angle data bytes 1-2: 16-bit signed angle in degrees, high byte
    *     first (-32767 -32768)
-   * 
+   *
    * @deprecated
    */
   WAIT_ANGLE = 157,
@@ -804,7 +940,7 @@ typedef enum _roomba_op_code {
    * | Digital Input 2   | 20     | 236                            |
    * | Digital Input 3   | 21     | 235                            |
    * | OI Mode = Passive | 22     | 234                            |
-   * 
+   *
    * @deprecated
    */
   WAIT_EVENT = 158,
@@ -905,7 +1041,7 @@ typedef enum _roomba_op_code {
    * Buttons
    * Opcode: 165
    * Data Bytes: 1
-   * 
+   *
    * This command lets you push Roomba’s buttons. The buttons will
    * automatically release after 1/6th of a second.
    *   - Serial sequence: [165] [Buttons]
@@ -943,7 +1079,7 @@ typedef enum _roomba_op_code {
    * Set Day/Time
    * Opcode: 168
    * Data Bytes: 3
-   * 
+   *
    * This command sets Roomba’s clock.
    *   - Serial sequence: [168] [Day] [Hour] [Minute]
    *   - Available in modes: Passive, Safe, or Full.
@@ -967,7 +1103,7 @@ typedef enum _roomba_op_code {
    * Stop
    * Opcode: 173
    * Data Bytes: 0
-   * 
+   *
    * This command stops the OI. All streams will stop and the robot will no
    * longer respond to commands.
    * Use this command when you are finished working with the robot.
